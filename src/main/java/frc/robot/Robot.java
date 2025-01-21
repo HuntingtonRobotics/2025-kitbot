@@ -8,10 +8,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-/**
- * This is a demo program showing the use of the DifferentialDrive class. Runs the motors with split
- * arcade steering and an Xbox controller.
- */
 public class Robot extends TimedRobot {
 
   private RobotContainer robotContainer;

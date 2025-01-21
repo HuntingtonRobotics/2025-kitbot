@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Local Testing"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
+            "pathName": "Square"
           }
         }
       ]
