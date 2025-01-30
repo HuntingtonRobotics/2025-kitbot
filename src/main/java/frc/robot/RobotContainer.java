@@ -43,14 +43,15 @@ public class RobotContainer {
         frontRight.setInverted(true);
         backRight.setInverted(true);
 
-        m_maxSpeed = Shuffleboard.getTab("Configuration")
-                .add("Max Speed", 1)
-                .withWidget("Number Slider")
-                .withPosition(1, 1)
-                .withSize(2, 1)
-                .getEntry();
-
-        m_robotDrive.setMaxOutput(m_maxSpeed.getDouble(1.0));
+        // m_maxSpeed = Shuffleboard.getTab("Configuration")
+        //         .add("Max Speed", 1)
+        //         .withWidget("Number Slider")
+        //         .withPosition(1, 1)
+        //         .withSize(2, 1)
+        //         .getEntry();
+        //m_maxSpeed.getDouble(1.0)
+        double percentPower = 1.0;
+        m_robotDrive.setMaxOutput(percentPower);
 
         configureBindings();
     }
