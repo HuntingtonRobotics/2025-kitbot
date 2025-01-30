@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -25,7 +26,8 @@ public class DriveSubsystem extends SubsystemBase {
         // All other subsystem initialization
         // ...
         m_RobotDrive = robotDrive;
-        double trackWidthMeters = 0.546;
+        double trackWidthInches = 21.5;
+        double trackWidthMeters = Units.inchesToMeters(trackWidthInches);
         kinematics = new DifferentialDriveKinematics(trackWidthMeters);
 
         // Load the RobotConfig from the GUI settings. You should probably
