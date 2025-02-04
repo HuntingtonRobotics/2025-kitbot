@@ -49,7 +49,7 @@ public class RobotContainer {
         //         .withPosition(1, 1)
         //         .withSize(2, 1)
         //         .getEntry();
-        //m_maxSpeed.getDouble(1.0)
+        //m_maxSpeed.getDouble(1.0 = 100%)(.5 = half speed or 50%)
         double percentPower = 1.0;
         m_robotDrive.setMaxOutput(percentPower);
 
