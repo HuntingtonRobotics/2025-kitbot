@@ -20,7 +20,8 @@ public class RobotContainer {
     private GenericEntry m_maxSpeed;
 
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-    private final Hopper hopper = new Hopper();
+    private final HopperSubsystem hopper = new HopperSubsystem();
+    private final CageClimberSubsystem climber = new CageClimberSubsystem();
 
     public RobotContainer() {
 
@@ -51,6 +52,8 @@ public class RobotContainer {
                         driveSubsystem));
 
         hopper.releaseCoral(-m_driverController.getRightY());
+        
+        m_driverController.a().onTrue(climber.engage());
     }
 
     public Command getAutonomousCommand() {
