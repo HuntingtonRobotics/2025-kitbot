@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.GenericEntry;
-
+import frc.robot.encoder;
 import java.io.Console;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   private final XboxController m_driverController = new XboxController(0);
   private GenericEntry m_maxSpeed;
   private final WPI_TalonSRX hopper = new WPI_TalonSRX(14);
+  private final encoder encoder = new encoder();
 
   public Robot() {
 
@@ -51,6 +52,7 @@ public class Robot extends TimedRobot {
     frontRight.setInverted(true);
     backRight.setInverted(true);
 
+    //encoder.SetupForTurnOnce();
 
     m_maxSpeed =
     Shuffleboard.getTab("Configuration")
@@ -65,14 +67,18 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    hopper.set(-m_driverController.getRightY());
+    //hopper.set(-m_driverController.getRightY());
+    //if (m_driverController.getAButtonPressed()){
+      encoder.turnNum();
+      System.out.println("Pos: " + encoder.position + " Out: " + encoder.output);
 
+    //}
     // Drive with split arcade drive.
     // That means that the Y axis of the left stick moves forward and backward,
     //  and the X of the right stick turns left and right.
     
     //the get left for x and y value are both backwards on the controller
-    m_robotDrive.arcadeDrive(-m_driverController.getLeftY(), -m_driverController.getLeftX());
-
+    //m_robotDrive.arcadeDrive(-m_driverController.getLeftY(), -m_driverController.getLeftX());
+    //System.out.println(encoder1.getEncoder(0,1));
   }
 }
