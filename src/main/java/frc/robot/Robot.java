@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.networktables.GenericEntry;
-import frc.robot.encoder;
+import frc.robot.encodersClass;
 import java.io.Console;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
   private final XboxController m_driverController = new XboxController(0);
   private GenericEntry m_maxSpeed;
   private final WPI_TalonSRX hopper = new WPI_TalonSRX(14);
-  private final encoder encoder = new encoder();
+  private final encodersClass m_encodersClass = new encodersClass();
 
   public Robot() {
 
@@ -68,10 +68,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //hopper.set(-m_driverController.getRightY());
-    //if (m_driverController.getAButtonPressed()){
-      encoder.turnNum();
-      System.out.println("Pos: " + encoder.position + " Out: " + encoder.output);
-
+    //if (m_driverController().getAButtonPressed()){
+      m_encodersClass.turnNum(2.0);
     //}
     // Drive with split arcade drive.
     // That means that the Y axis of the left stick moves forward and backward,
