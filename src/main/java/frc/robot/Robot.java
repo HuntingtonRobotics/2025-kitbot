@@ -12,9 +12,15 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.networktables.GenericEntry;
 import frc.robot.encodersClass;
 import java.io.Console;
+import java.lang.ModuleLayer.Controller;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -28,21 +34,25 @@ public class Robot extends TimedRobot {
   private final WPI_TalonSRX backRight = new WPI_TalonSRX(2);
   private final WPI_TalonSRX frontLeft = new WPI_TalonSRX(3);
   private final WPI_TalonSRX backLeft = new WPI_TalonSRX(1);
-  private final DifferentialDrive m_robotDrive;
-  private final XboxController m_driverController = new XboxController(0);
-  private GenericEntry m_maxSpeed;
+  private final DifferentialDrive robotDrive;
+  private final XboxController controller = new XboxController(0);
+  private GenericEntry maxSpeed;
   private final WPI_TalonSRX hopper = new WPI_TalonSRX(14);
-  private final encodersClass m_encodersClass = new encodersClass();
+  private final encodersClass encodersClass = new encodersClass();
+  private final pid robotPID = new pid();
+  private final LimelightCamera limelight1 = new LimelightCamera(1, RotationsPerSecond.of(0.75).in(RadiansPerSecond));
 
   public Robot() {
 
     backRight.follow(frontRight);
     backLeft.follow(frontLeft);    
-    m_robotDrive = new DifferentialDrive(frontLeft::set, frontRight::set);
+    robotDrive = new DifferentialDrive(frontLeft::set, frontRight::set);
 
-    SendableRegistry.addChild(m_robotDrive, frontLeft);
-    SendableRegistry.addChild(m_robotDrive, backLeft);
+    SendableRegistry.addChild(robotDrive, frontLeft);
+    SendableRegistry.addChild(robotDrive, backLeft);
   }
+
+
 
   @Override
   public void robotInit() {
@@ -51,10 +61,12 @@ public class Robot extends TimedRobot {
     // gearbox is constructed, you might have to invert the left side instead.
     frontRight.setInverted(true);
     backRight.setInverted(true);
+    encodersClass.SetupForTurnOnce();
+
 
     //encoder.SetupForTurnOnce();
 
-    m_maxSpeed =
+    maxSpeed =
     Shuffleboard.getTab("Configuration")
         .add("Max Speed", 1)
         .withWidget("Number Slider")
@@ -62,21 +74,23 @@ public class Robot extends TimedRobot {
         .withSize(2, 1)
         .getEntry();
 
-    m_robotDrive.setMaxOutput(m_maxSpeed.getDouble(1.0));
+    robotDrive.setMaxOutput(maxSpeed.getDouble(1.0));
   }
 
   @Override
   public void teleopPeriodic() {
-    //hopper.set(-m_driverController.getRightY());
-    //if (m_driverController().getAButtonPressed()){
-      m_encodersClass.turnNum(2.0);
-    //}
-    // Drive with split arcade drive.
-    // That means that the Y axis of the left stick moves forward and backward,
-    //  and the X of the right stick turns left and right.
+    double yMove = -controller.getLeftY();
+    double rot = -controller.getLeftX();
     
-    //the get left for x and y value are both backwards on the controller
-    //m_robotDrive.arcadeDrive(-m_driverController.getLeftY(), -m_driverController.getLeftX());
-    //System.out.println(encoder1.getEncoder(0,1));
+    encodersClass.rot(1);
+    if (controller.getAButton()) {
+      // Do limelight stuff
+      final double limelightRot = limelight1.aimProportional();
+      rot = limelightRot;
+      final double limelightForward = limelight1.rangeProportional();
+      yMove = limelightForward;
+    }
+
+    robotDrive.arcadeDrive(yMove, rot);
   }
 }
